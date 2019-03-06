@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"time"
+	"../db"
+)
 
 type Task struct {
 	ID     			uint		`json:"id"`
@@ -13,4 +16,27 @@ type Task struct {
 	CreatedAt 		time.Time 	`json:"created_at"`
 	UpdatedAt 		time.Time 	`json:"updated_at"`
 	DeletedAt 		*time.Time 	`json:"deleted_at"`	
+}
+
+type TaskModel struct{}
+
+func (m *TaskModel) Find(list *[]Task) ( err error) {
+	if err := db.DB.Find(list).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *TaskModel) Get(id string, task *Task) (err error) {
+	if err := db.DB.First(task, id).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *TaskModel) Create(task *Task) (err error) {
+	if err := db.DB.Create(task).Error; err != nil {
+		return err
+	}
+	return nil
 }

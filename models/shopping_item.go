@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	"time"
+	"../db"
+)
 
 type ShoppingItem struct {
 	ID     			uint			`json:"id"`
@@ -12,4 +15,27 @@ type ShoppingItem struct {
 	CreatedAt 		time.Time 		`json:"created_at"`
 	UpdatedAt 		time.Time 		`json:"updated_at"`
 	DeletedAt 		*time.Time 		`json:"deleted_at"`	
+}
+
+type ShoppingItemModel struct{}
+
+func (m *ShoppingItemModel) Find(list *[]ShoppingItem) ( err error) {
+	if err := db.DB.Find(list).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *ShoppingItemModel) Get(id string,shoppingItem *ShoppingItem) (err error) {
+	if err := db.DB.First(shoppingItem, id).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *ShoppingItemModel) Create(shoppingItem *ShoppingItem) (err error) {
+	if err := db.DB.Create(shoppingItem).Error; err != nil {
+		return err
+	}
+	return nil
 }

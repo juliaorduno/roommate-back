@@ -1,26 +1,27 @@
 package main
 
 import (
-	"net/http"
-	
-	"./controllers"
-
-	"github.com/gin-gonic/gin"
+	"./db"
+	"./models"
+	"./routers"
 )
 
 func main() {
-	router := gin.Default()
+	db.DB = db.DbConn()
+	defer db.DB.Close()
 
-	api := router.Group("/api/v1")
-	{
-		member := new(controllers.MemberController)
-		api.GET("/members", member.Find)
-		api.POST("/members", member.Create)
-	}
+	db.DB.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
+		&models.Member{},
+		&models.RGroup{},
+		&models.Announcement{},
+		&models.Meeting{},
+		&models.ShoppingItem{},
+		&models.Task{},
+	)
 
-	router.NoRoute(func(c *gin.Context) {
-		c.String(http.StatusNotFound, "Not Found")
-	})
+	//db.DB.Model(&models.Member{}).AddForeignKey("group_id", "r_groups(id)","RESTRICT", "RESTRICT")
 
-	router.Run(":3030")
+	router := routers.SetupRouter()
+
+	router.Run(":3000")
 }

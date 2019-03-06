@@ -1,4 +1,4 @@
-package models
+package db
 
 import (
 	"fmt"
@@ -7,6 +7,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
+
+var DB *gorm.DB
 
 func DbConn() (*gorm.DB) {
 	var myEnv map[string]string
@@ -24,13 +26,6 @@ func DbConn() (*gorm.DB) {
     if err != nil {
         panic(err.Error())
 	}
-
-	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
-		&Member{},
-		&RGroup{},
-	)
-	
-	//db.Model(&Member{}).AddForeignKey("group_id", "r_groups(id)","RESTRICT", "RESTRICT")
 
 	return db
 }
