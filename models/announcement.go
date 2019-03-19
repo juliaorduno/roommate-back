@@ -7,6 +7,7 @@ import (
 
 type Announcement struct {
 	ID     			uint			`json:"id"`
+	GroupID			int				`sql:"type:int(10)" json:"group_id"`
 	Content			string			`sql:"type:varchar(255);not null" json:"content"`
 	CreatedBy		int			    `sql:"type:int(10);not null" json:"created_by"`
 	CreatedAt		time.Time		`json:"created_at"`
@@ -32,6 +33,13 @@ func (m *AnnouncementModel) Get(id string, announcement *Announcement) (err erro
 
 func (m *AnnouncementModel) Create(announcement *Announcement) (err error) {
 	if err := db.DB.Create(announcement).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *AnnouncementModel) GetAnnouncements (groupID int, list *[]Task)(err error){
+	if err := db.DB.Where("group_id = ?", groupID).Find(list).Error; err != nil {
 		return err
 	}
 	return nil
