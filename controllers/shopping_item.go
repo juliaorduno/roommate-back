@@ -49,3 +49,26 @@ func (shoppingItem *ShoppingItemController) Create(c *gin.Context) {
 
 	c.JSON(200, gin.H{"message": "ShoppingItem Created", "new_shopping_item": data})
 }
+
+func (shoppingItem *ShoppingItemController) GetShoppingItems(c *gin.Context) {
+	var data struct {
+		GroupID int `json:"group_id"`
+	}
+	if c.BindJSON(&data) != nil {
+		c.JSON(406, gin.H{"message": "Invalid form", "form": data})
+		c.Abort()
+		return
+	}
+
+	groupID = data.GroupID
+	var list []models.ShoppingItem
+	err := shoppingItemModel.Create(groupID, &list)
+
+	if err != nil {
+		c.JSON(406, gin.H{"message": "Shopping items could not be retrieved", "error": err.Error()})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Shopping items retrieved", "shopping items": data})
+}
