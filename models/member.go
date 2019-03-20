@@ -2,23 +2,25 @@ package models
 
 import (
 	"time"
+
 	"../db"
 )
 
 type Member struct {
-	ID 	        uint     	`json:"id"`
-	FullName	string		`sql:"type:varchar(255);not null" json:"full_name"`	
-	Username	string		`sql:"type:varchar(50);not null;unique" json:"username"`
-	Email		string		`sql:"type:varchar(50);not null;unique" json:"email"`
-	GroupID		int			`sql:"type:int(10)" json:"group_id"`
-	CreatedAt 	time.Time 	`json:"created_at"`
-	UpdatedAt 	time.Time 	`json:"updated_at"`
-	DeletedAt 	*time.Time 	`json:"deleted_at"`
+	ID        uint       `json:"id"`
+	FullName  string     `sql:"type:varchar(255);not null" json:"full_name"`
+	Username  string     `sql:"type:varchar(50);not null;unique" json:"username"`
+	GroupID   int        `sql:"type:int(10)" json:"group_id"`
+	Email     string     `sql:"type:varchar(50);not null;unique" json:"email"`
+	GroupID   int        `sql:"type:int(10)" json:"group_id"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
+	DeletedAt *time.Time `json:"deleted_at"`
 }
 
 type MemberModel struct{}
 
-func (m *MemberModel) Find(list *[]Member) ( err error) {
+func (m *MemberModel) Find(list *[]Member) (err error) {
 	if err := db.DB.Find(list).Error; err != nil {
 		return err
 	}
@@ -39,7 +41,14 @@ func (m *MemberModel) Create(member *Member) (err error) {
 	return nil
 }
 
-func (m *MemberModel) AddToGroup(id int, groupID  int, member *Member) (err error) {
+func (m *MemberModel) GetMembers(groupID int, list *[]Member) (err error) {
+	if err := db.DB.Where("group_id = ?", groupID).Find(list).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *MemberModel) AddToGroup(id int, groupID int, member *Member) (err error) {
 	if err := db.DB.First(member, id).Error; err != nil {
 		return err
 	}
@@ -89,5 +98,3 @@ func (m *MemberModel) Delete(id string, data Member) (member Member, err error) 
 	}
 	return member, nil
 }*/
-
-

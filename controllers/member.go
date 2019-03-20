@@ -51,9 +51,9 @@ func (member *MemberController) Create(c *gin.Context) {
 }
 
 func (member *MemberController) JoinGroup(c *gin.Context) {
-	var data struct{
-		GroupCode	string	`json:"group_code"`
-		MemberID	int		`json:"member_id"`
+	var data struct {
+		GroupCode string `json:"group_code"`
+		MemberID  int    `json:"member_id"`
 	}
 	var updatedMember models.Member
 
@@ -83,4 +83,28 @@ func (member *MemberController) JoinGroup(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"message": "Member Created", "updated_member": updatedMember})
+}
+
+func (member *MemberController) GetMembers(c *gin.Context) {
+	var data struct {
+		GroupID int `json:"group_id"`
+	}
+	if c.BindJSON(&data) != nil {
+		c.JSON(406, gin.H{"message": "Invalid form", "form": data})
+		c.Abort()
+		return
+	}
+
+	groupID = data.GroupID
+	var list []models.Member
+	err := memberModel.Create(groupID, &list)
+
+	if err != nil {
+		c.JSON(406, gin.H{"message": "Members could not be retrieved", "error": err.Error()})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "Members retrieved", "members": data})
+
 }
