@@ -12,7 +12,6 @@ type Member struct {
 	Username  string     `sql:"type:varchar(50);not null;unique" json:"username"`
 	GroupID   int        `sql:"type:int(10)" json:"group_id"`
 	Email     string     `sql:"type:varchar(50);not null;unique" json:"email"`
-	GroupID   int        `sql:"type:int(10)" json:"group_id"`
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`

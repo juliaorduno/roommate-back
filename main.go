@@ -23,5 +23,5 @@ func main() {
 
 	router := routers.SetupRouter()
 
-	router.Run(":3000")
+	router.Run(":3030")
 }

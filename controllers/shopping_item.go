@@ -60,9 +60,9 @@ func (shoppingItem *ShoppingItemController) GetShoppingItems(c *gin.Context) {
 		return
 	}
 
-	groupID = data.GroupID
+	groupID := data.GroupID
 	var list []models.ShoppingItem
-	err := shoppingItemModel.Create(groupID, &list)
+	err := shoppingItemModel.GetShoppingItems(groupID, &list)
 
 	if err != nil {
 		c.JSON(406, gin.H{"message": "Shopping items could not be retrieved", "error": err.Error()})
@@ -70,5 +70,5 @@ func (shoppingItem *ShoppingItemController) GetShoppingItems(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Shopping items retrieved", "shopping items": data})
+	c.JSON(200, gin.H{"message": "Shopping items retrieved", "shopping items": list})
 }

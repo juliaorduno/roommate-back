@@ -60,9 +60,9 @@ func (task *TaskController) GetToDos(c *gin.Context) {
 		return
 	}
 
-	groupID = data.GroupID
+	groupID := data.GroupID
 	var list []models.Task
-	err := taskModel.Create(groupID, &list)
+	err := taskModel.GetToDos(groupID, &list)
 	
 	if err != nil {
 		c.JSON(406, gin.H{"message": "To Dos could not be retrieved", "error": err.Error()})
@@ -70,5 +70,5 @@ func (task *TaskController) GetToDos(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "To dos retrieved", "todos": data})
+	c.JSON(200, gin.H{"message": "To dos retrieved", "todos": list})
 }

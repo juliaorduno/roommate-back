@@ -85,7 +85,7 @@ func (member *MemberController) JoinGroup(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Member Created", "updated_member": updatedMember})
 }
 
-func (member *MemberController) GetMembers(c *gin.Context) {
+/*func (member *MemberController) GetMembers(c *gin.Context) {
 	var data struct {
 		GroupID int `json:"group_id"`
 	}
@@ -107,4 +107,4 @@ func (member *MemberController) GetMembers(c *gin.Context) {
 
 	c.JSON(200, gin.H{"message": "Members retrieved", "members": data})
 
-}
+}*/

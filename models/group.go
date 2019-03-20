@@ -41,10 +41,3 @@ func (m *GroupModel) Create(rGroup *RGroup) (err error) {
 	}
 	return nil
 }
-
-func (m *GroupModel) GetGroups(groupID int, list *[]rGroup) (err error) {
-	if err := db.DB.Where("group_id = ?", groupID).Find(list).Error; err != nil {
-		return err
-	}
-	return nil
-}

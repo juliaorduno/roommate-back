@@ -48,8 +48,9 @@ func (meeting *MeetingController) Create(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"message": "Meeting Created", "new_meeting": data})
+}
 
-	func(meeting *MeetingController) GetMeetings(c *gin.Context){
+func(meeting *MeetingController) GetMeetings(c *gin.Context){
 		var data struct {
 			GroupID 		int			`json:"group_id"`
 		}
@@ -60,9 +61,9 @@ func (meeting *MeetingController) Create(c *gin.Context) {
 			return
 		}
 
-		groupID = data.GroupID
+		groupID := data.GroupID
 		var list []models.Meeting
-		err := meetingModel.Create(groupID, &list)
+		err := meetingModel.GetMeetings(groupID, &list)
 
 		if err != nil {
 			c.JSON(406, gin.H{"message": "Meetings could not be retrieved", "error": err.Error()})
@@ -70,7 +71,6 @@ func (meeting *MeetingController) Create(c *gin.Context) {
 			return
 		}
 
-		c.JSON(200, gin.H{"message": "Meetings retrieved", "meetings": data})
+		c.JSON(200, gin.H{"message": "Meetings retrieved", "meetings": list})
 
 	}
-}

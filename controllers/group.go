@@ -95,26 +95,3 @@ func (RGroup *GroupController) CreateGroup(c *gin.Context) {
 
 	c.JSON(200, gin.H{"message": "Group Created", "new_rgroup": data})
 }
-
-func (group *GroupController) GetGroups(c *gin.Context) {
-	var data struct {
-		GroupID int `json:"group_id"`
-	}
-	if c.BindJSON(&data) != nil {
-		c.JSON(406, gin.H{"message": "Invalid form", "form": data})
-		c.Abort()
-		return
-	}
-
-	groupID = data.GroupID
-	var list []models.Group
-	err := groupModel.Create(groupID, &list)
-
-	if err != nil {
-		c.JSON(406, gin.H{"message": "Groups could not be retrieved", "error": err.Error()})
-		c.Abort()
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Groups retrieved", "groups": data})
-}

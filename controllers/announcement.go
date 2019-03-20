@@ -49,19 +49,21 @@ func (announcement *AnnouncementController) Create(c *gin.Context) {
 
 	c.JSON(200, gin.H{"message": "Announcement Created", "new_announcement": data})
 
-	func(announcement *AnnouncementController) GetAnnouncements(c *gin.Context) {
-		var data struct {
-			GroupID 		int 		`json:"group_id"`
+}
 
-		}
-		if c.JSON(406, gin.H{"message": "Invalid form", "form": data})
+func(announcement *AnnouncementController) GetAnnouncements(c *gin.Context) {
+	var data struct {
+		GroupID 		int 		`json:"group_id"`
+	}
+	if c.BindJSON(&data) != nil {
+		c.JSON(406, gin.H{"message": "Invalid form", "form": data}) 
 		c.Abort()
 		return
 	}
 
-	groupID = data.GroupID
+	groupID := data.GroupID
 	var list []models.Announcement
-	err := announcementModel.Create(groupID, &list)
+	err := announcementModel.GetAnnouncements(groupID, &list)
 
 	if err != nil{
 		c.JSON(406, gin.H{"message": "Announcements could not be retrieved", "error": err.Error()})
@@ -69,7 +71,5 @@ func (announcement *AnnouncementController) Create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Announcements retrieved", "announcements": data}
-
-
+	c.JSON(200, gin.H{"message": "Announcements retrieved", "announcements": list})
 }
