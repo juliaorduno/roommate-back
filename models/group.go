@@ -13,8 +13,8 @@ type RGroup struct {
 	Code      string     `sql:"type:varchar(50);not null;unique" json:"code"`
 	Name      string     `sql:"type:varchar(50);not null" json:"name"`
 	Size      int        `json:"size"`
-	CreatedBy uint       `sql:"not null" json:"created_by"`
-	Admin     uint       `sql:"not null" json:"admin"`
+	CreatedBy int       `sql:"not null" json:"created_by"`
+	Admin     int       `sql:"not null" json:"admin"`
 	UpdatedAt time.Time  `json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
 }

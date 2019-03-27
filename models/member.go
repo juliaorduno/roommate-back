@@ -48,7 +48,7 @@ func (m *MemberModel) GetMembers(groupID int, list *[]Member) (err error) {
 	return nil
 }
 
-func (m *MemberModel) AddToGroup(id uint, groupID uint, member *Member) (err error) {
+func (m *MemberModel) AddToGroup(id int, groupID uint, member *Member) (err error) {
 	if err := db.DB.First(member, id).Error; err != nil {
 		return err
 	}
