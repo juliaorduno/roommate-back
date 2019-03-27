@@ -8,12 +8,13 @@ import (
 type Task struct {
 	ID     			uint		`json:"id"`
 	Description		string		`sql:"type:varchar(255);not null" json:"description"`
-	GroupID			int			`sql:"type:int(10)" json:"group_id"`
-	Asignee			int			`sql:"type:int(10)" json:"asignee"`
+	GroupID			uint		`json:"group_id"`
+	Asignee			uint		`json:"asignee"`
 	DueDate			time.Time	`sql:"not null" json:"due_date"`
 	Finished		int			`json:"finished"`
+	FinishedBy		uint		`json:"finished_by"`
 	FinishedAt		time.Time	`json:"finished_at"`
-	CreatedBy		int 		`sql:"type:int(10); not null" json:"created_by"`
+	CreatedBy		uint 		`sql:"not null" json:"created_by"`
 	CreatedAt 		time.Time 	`json:"created_at"`
 	UpdatedAt 		time.Time 	`json:"updated_at"`
 	DeletedAt 		*time.Time 	`json:"deleted_at"`	
@@ -43,7 +44,22 @@ func (m *TaskModel) Create(task *Task) (err error) {
 }
 
 func (m *TaskModel) GetToDos(groupID int, list *[]Task) ( err error) {
-	if err := db.DB.Where("group_id = ?", groupID).Find(list).Error; err != nil {
+	if err := db.DB.Where("group_id = ? AND finished = ?", groupID, 0).Find(list).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *TaskModel) FinishTask(id int, finished_by uint, task *Task) (err error) {
+	if err := db.DB.First(task, id).Error; err != nil {
+		return err
+	}
+
+	task.Finished = 1
+	task.FinishedBy = finished_by
+	task.FinishedAt = time.Now()
+
+	if err := db.DB.Save(task).Error; err != nil {
 		return err
 	}
 	return nil

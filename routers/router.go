@@ -23,15 +23,14 @@ func SetupRouter() *gin.Engine {
 		api.POST("/members", member.Create)
 		api.POST("/members/joinGroup", member.JoinGroup)
 
-		
 		api.GET("/groups", rGroup.Find)
 		api.GET("/groups/:id", rGroup.Get)
 		api.POST("/groups", rGroup.Create)
 		api.POST("/groups/createGroup", rGroup.CreateGroup)
-		api.POST("/groups/getAnnouncements", announcement.GetAnnouncements)
 		api.POST("/groups/getTodos", task.GetToDos)
 		api.POST("/groups/getMeetings", meeting.GetMeetings)
 		api.POST("/groups/getShoppingItems", shoppingItem.GetShoppingItems)
+		api.POST("/groups/getAnnouncements", announcement.GetAnnouncements)
 		
 		api.GET("/announcements", announcement.Find)
 		api.GET("/announcements/:id", announcement.Get)
@@ -41,15 +40,15 @@ func SetupRouter() *gin.Engine {
 		api.GET("/meetings/:id", meeting.Get)
 		api.POST("/meetings", meeting.Create)
 
-		
 		api.GET("/shoppingItems", shoppingItem.Find)
 		api.GET("/shoppingItems/:id", shoppingItem.Get)
 		api.POST("/shoppingItems", shoppingItem.Create)
+		api.POST("/shoppingItems/finish", shoppingItem.FinishItem)
 
-		
 		api.GET("/tasks", task.Find)
 		api.GET("/tasks/:id", task.Get)
 		api.POST("/tasks", task.Create)
+		api.POST("/tasks/finish", task.FinishTask)
 	}
 
 	router.NoRoute(func(c *gin.Context) {

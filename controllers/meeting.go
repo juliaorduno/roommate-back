@@ -35,14 +35,14 @@ func (meeting *MeetingController) Get(c *gin.Context) {
 func (meeting *MeetingController) Create(c *gin.Context) {
 	var data models.Meeting
 	if c.BindJSON(&data) != nil {
-		c.JSON(406, gin.H{"message": "Invalid form", "form": data})
+		c.JSON(400, gin.H{"message": "Invalid form", "form": data})
 		c.Abort()
 		return
 	}
 
 	err := meetingModel.Create(&data)
 	if err != nil {
-		c.JSON(406, gin.H{"message": "Meeting could not be created", "error": err.Error()})
+		c.JSON(500, gin.H{"message": "Meeting could not be created", "error": err.Error()})
 		c.Abort()
 		return
 	}
@@ -56,7 +56,7 @@ func(meeting *MeetingController) GetMeetings(c *gin.Context){
 		}
 
 		if c.BindJSON(&data) != nil {
-			c.JSON(406, gin.H{"message": "Invalid form", "form": data})
+			c.JSON(400, gin.H{"message": "Invalid form", "form": data})
 			c.Abort()
 			return
 		}
@@ -66,7 +66,7 @@ func(meeting *MeetingController) GetMeetings(c *gin.Context){
 		err := meetingModel.GetMeetings(groupID, &list)
 
 		if err != nil {
-			c.JSON(406, gin.H{"message": "Meetings could not be retrieved", "error": err.Error()})
+			c.JSON(400, gin.H{"message": "Meetings could not be retrieved", "error": err.Error()})
 			c.Abort()
 			return
 		}

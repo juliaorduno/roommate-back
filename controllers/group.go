@@ -35,14 +35,14 @@ func (RGroup *GroupController) Get(c *gin.Context) {
 func (RGroup *GroupController) Create(c *gin.Context) {
 	var data models.RGroup
 	if c.BindJSON(&data) != nil {
-		c.JSON(406, gin.H{"message": "Invalid form", "form": data})
+		c.JSON(400, gin.H{"message": "Invalid form", "form": data})
 		c.Abort()
 		return
 	}
 
 	err := groupModel.Create(&data)
 	if err != nil {
-		c.JSON(406, gin.H{"message": "Group could not be created", "error": err.Error()})
+		c.JSON(500, gin.H{"message": "Group could not be created", "error": err.Error()})
 		c.Abort()
 		return
 	}
@@ -53,19 +53,19 @@ func (RGroup *GroupController) Create(c *gin.Context) {
 func (RGroup *GroupController) CreateGroup(c *gin.Context) {
 	var data models.RGroup
 	if c.BindJSON(&data) != nil {
-		c.JSON(406, gin.H{"message": "Invalid form", "form": data})
+		c.JSON(400, gin.H{"message": "Invalid form", "form": data})
 		c.Abort()
 		return
 	}
 
 	if data.Name == "" {
-		c.JSON(406, gin.H{"message": "Invalid form", "error": "You must add a group name"})
+		c.JSON(400, gin.H{"message": "Invalid form", "error": "You must add a group name"})
 		c.Abort()
 		return
 	}
 
 	if data.CreatedBy <= 0 {
-		c.JSON(406, gin.H{"message": "Invalid form", "error": "You must add a memberID"})
+		c.JSON(400, gin.H{"message": "Invalid form", "error": "You must add a memberID"})
 		c.Abort()
 		return
 	}
@@ -75,20 +75,17 @@ func (RGroup *GroupController) CreateGroup(c *gin.Context) {
 	}
 	data.Admin = data.CreatedBy
 
-	//Generate random code
-	data.Code = "SD98D2A"
-
 	err := groupModel.Create(&data)
 	if err != nil {
-		c.JSON(406, gin.H{"message": "Group could not be created", "error": err.Error()})
+		c.JSON(500, gin.H{"message": "Group could not be created", "error": err.Error()})
 		c.Abort()
 		return
 	}
 
 	var member models.Member
-	err = memberModel.AddToGroup(data.CreatedBy, int(data.ID), &member)
+	err = memberModel.AddToGroup(data.CreatedBy, uint(data.ID), &member)
 	if err != nil {
-		c.JSON(406, gin.H{"message": "Group could not be assigned to member", "error": err.Error()})
+		c.JSON(500, gin.H{"message": "Group could not be assigned to member", "error": err.Error()})
 		c.Abort()
 		return
 	}

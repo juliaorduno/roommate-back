@@ -35,14 +35,14 @@ func (member *MemberController) Get(c *gin.Context) {
 func (member *MemberController) Create(c *gin.Context) {
 	var data models.Member
 	if c.BindJSON(&data) != nil {
-		c.JSON(406, gin.H{"message": "Invalid form", "form": data})
+		c.JSON(400, gin.H{"message": "Invalid form", "form": data})
 		c.Abort()
 		return
 	}
 
 	err := memberModel.Create(&data)
 	if err != nil {
-		c.JSON(406, gin.H{"message": "Member could not be created", "error": err.Error()})
+		c.JSON(500, gin.H{"message": "Member could not be created", "error": err.Error()})
 		c.Abort()
 		return
 	}
@@ -58,53 +58,29 @@ func (member *MemberController) JoinGroup(c *gin.Context) {
 	var updatedMember models.Member
 
 	if c.BindJSON(&data) != nil {
-		c.JSON(406, gin.H{"message": "Invalid form", "form": data})
+		c.JSON(400, gin.H{"message": "Invalid form", "form": data})
 		c.Abort()
 		return
 	}
 
 	if data.MemberID <= 0 {
-		c.JSON(406, gin.H{"message": "Invalid form", "error": "You must add a memberID"})
+		c.JSON(400, gin.H{"message": "Invalid form", "error": "You must add a memberID"})
 		c.Abort()
 		return
 	}
 
 	if data.GroupCode == "" {
-		c.JSON(406, gin.H{"message": "Invalid form", "error": "You must add a group code"})
+		c.JSON(400, gin.H{"message": "Invalid form", "error": "You must add a group code"})
 		c.Abort()
 		return
 	}
 
 	err := memberModel.JoinGroup(data.MemberID, data.GroupCode, &updatedMember)
 	if err != nil {
-		c.JSON(406, gin.H{"message": "Member could not join group", "error": err.Error()})
+		c.JSON(500, gin.H{"message": "Member could not join group", "error": err.Error()})
 		c.Abort()
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Member Created", "updated_member": updatedMember})
+	c.JSON(200, gin.H{"message": "Group Joined", "updated_member": updatedMember})
 }
-
-/*func (member *MemberController) GetMembers(c *gin.Context) {
-	var data struct {
-		GroupID int `json:"group_id"`
-	}
-	if c.BindJSON(&data) != nil {
-		c.JSON(406, gin.H{"message": "Invalid form", "form": data})
-		c.Abort()
-		return
-	}
-
-	groupID = data.GroupID
-	var list []models.Member
-	err := memberModel.Create(groupID, &list)
-
-	if err != nil {
-		c.JSON(406, gin.H{"message": "Members could not be retrieved", "error": err.Error()})
-		c.Abort()
-		return
-	}
-
-	c.JSON(200, gin.H{"message": "Members retrieved", "members": data})
-
-}*/
