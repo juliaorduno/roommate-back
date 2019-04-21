@@ -52,16 +52,7 @@ func (announcement *AnnouncementController) Create(c *gin.Context) {
 }
 
 func(announcement *AnnouncementController) GetAnnouncements(c *gin.Context) {
-	var data struct {
-		GroupID 		int 		`json:"group_id"`
-	}
-	if c.BindJSON(&data) != nil {
-		c.JSON(400, gin.H{"message": "Invalid form", "form": data}) 
-		c.Abort()
-		return
-	}
-
-	groupID := data.GroupID
+	groupID := c.Param("id")
 	var list []models.Announcement
 	err := announcementModel.GetAnnouncements(groupID, &list)
 

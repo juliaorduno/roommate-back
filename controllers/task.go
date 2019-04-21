@@ -51,16 +51,7 @@ func (task *TaskController) Create(c *gin.Context) {
 }
 
 func (task *TaskController) GetToDos(c *gin.Context) {
-	var data struct {
-		GroupID		int		`json:"group_id"`
-	}
-	if c.BindJSON(&data) != nil {
-		c.JSON(400, gin.H{"message": "Invalid form", "form": data})
-		c.Abort()
-		return
-	}
-
-	groupID := data.GroupID
+	groupID := c.Param("id")
 	var list []models.Task
 	err := taskModel.GetToDos(groupID, &list)
 	

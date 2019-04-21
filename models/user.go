@@ -68,7 +68,7 @@ func (m *UserModel) Create(user *User) (err error) {
 
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	user.Password = string(hashedPassword)
-
+	
 	if err := db.DB.Create(user).Error; err != nil {
 		return err
 	}

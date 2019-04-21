@@ -43,7 +43,7 @@ func (m *TaskModel) Create(task *Task) (err error) {
 	return nil
 }
 
-func (m *TaskModel) GetToDos(groupID int, list *[]Task) ( err error) {
+func (m *TaskModel) GetToDos(groupID string, list *[]Task) ( err error) {
 	if err := db.DB.Where("group_id = ? AND finished = ?", groupID, 0).Find(list).Error; err != nil {
 		return err
 	}

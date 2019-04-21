@@ -41,7 +41,7 @@ func (m *MeetingModel) Create(meeting *Meeting) (err error) {
 	return nil
 }
 
-func (m *MeetingModel) GetMeetings(groupID int, list *[]Meeting) (err error) {
+func (m *MeetingModel) GetMeetings(groupID string, list *[]Meeting) (err error) {
 	if err := db.DB.Where("group_id = ? AND start_date > ?", groupID, time.Now()).Find(list).Error; err != nil {
 		return err
 	}

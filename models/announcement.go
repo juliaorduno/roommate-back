@@ -39,7 +39,7 @@ func (m *AnnouncementModel) Create(announcement *Announcement) (err error) {
 	return nil
 }
 
-func (m *AnnouncementModel) GetAnnouncements (groupID int, list *[]Announcement)(err error){
+func (m *AnnouncementModel) GetAnnouncements (groupID string, list *[]Announcement)(err error){
 	if err := db.DB.Where("group_id = ?", groupID).Find(list).Error; err != nil {
 		return err
 	}

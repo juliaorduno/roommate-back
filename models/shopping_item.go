@@ -42,7 +42,7 @@ func (m *ShoppingItemModel) Create(shoppingItem *ShoppingItem) (err error) {
 	return nil
 }
 
-func (m *ShoppingItemModel) GetShoppingItems(groupID int, list *[]ShoppingItem) (err error) {
+func (m *ShoppingItemModel) GetShoppingItems(groupID string, list *[]ShoppingItem) (err error) {
 	if err := db.DB.Where("group_id = ? AND finished = ?", groupID, 0).Find(list).Error; err != nil {
 		return err
 	}

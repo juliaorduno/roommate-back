@@ -51,16 +51,7 @@ func (shoppingItem *ShoppingItemController) Create(c *gin.Context) {
 }
 
 func (shoppingItem *ShoppingItemController) GetShoppingItems(c *gin.Context) {
-	var data struct {
-		GroupID int `json:"group_id"`
-	}
-	if c.BindJSON(&data) != nil {
-		c.JSON(400, gin.H{"message": "Invalid form", "form": data})
-		c.Abort()
-		return
-	}
-
-	groupID := data.GroupID
+	groupID := c.Param("id")
 	var list []models.ShoppingItem
 	err := shoppingItemModel.GetShoppingItems(groupID, &list)
 

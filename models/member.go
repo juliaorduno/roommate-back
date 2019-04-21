@@ -8,10 +8,11 @@ import (
 
 type Member struct {
 	ID        uint       `json:"id"`
+	UserID		uint			 `json:"user_id" sql:"not null;unique"`
 	FullName  string     `sql:"type:varchar(255);not null" json:"full_name"`
 	Username  string     `sql:"type:varchar(50);not null;unique" json:"username"`
-	Group	  RGroup	 `gorm:"foreignkey:GroupID;association_foreignkey:ID" json:"group"`
-	GroupID   uint       `json:"group_id"`
+	Group	  RGroup	 		  `gorm:"foreignkey:GroupID;association_foreignkey:ID" json:"group"`
+	GroupID   uint       `sql:"default:null" json:"group_id"`
 	Email     string     `sql:"type:varchar(50);not null;unique" json:"email"`
 	UpdatedAt time.Time  `json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
@@ -48,7 +49,7 @@ func (m *MemberModel) GetMembers(groupID int, list *[]Member) (err error) {
 	return nil
 }
 
-func (m *MemberModel) AddToGroup(id int, groupID uint, member *Member) (err error) {
+func (m *MemberModel) AddToGroup(id uint, groupID uint, member *Member) (err error) {
 	if err := db.DB.First(member, id).Error; err != nil {
 		return err
 	}
@@ -79,7 +80,7 @@ func (m *MemberModel) JoinGroup(id int, groupCode string, member *Member) (err e
 		return err
 	}
 
-	member.Group = rGroup
+	//member.Group = rGroup
 
 	return nil
 }
