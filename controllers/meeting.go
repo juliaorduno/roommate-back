@@ -9,6 +9,14 @@ var meetingModel = new(models.MeetingModel)
 
 type MeetingController struct{}
 
+// ListMeetings godoc
+// @Summary List meetings
+// @Description get meetings
+// @Tags meetings
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.Meeting
+// @Router /meetings [get]
 func (meeting *MeetingController) Find(c *gin.Context) {
 	var list []models.Meeting
 	err := meetingModel.Find(&list)
@@ -20,6 +28,15 @@ func (meeting *MeetingController) Find(c *gin.Context) {
 	}
 }
 
+// GetMeeting godoc
+// @Summary Get a meeting
+// @Description get meeting by ID
+// @Tags meetings
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Meeting ID"
+// @Success 200 {object} models.Meeting
+// @Router /meetings/{id} [get]
 func (meeting *MeetingController) Get(c *gin.Context) {
 	id := c.Param("id")
 	var data models.Meeting
@@ -32,6 +49,15 @@ func (meeting *MeetingController) Get(c *gin.Context) {
 	}
 }
 
+// CreateMeeting godoc
+// @Summary Create a meeting
+// @Description create by json meeting
+// @Tags meetings
+// @Accept  json
+// @Produce  json
+// @Param meeting body models.Meeting true "Add Meeting"
+// @Success 200 {object} models.Meeting
+// @Router /meetings [post]
 func (meeting *MeetingController) Create(c *gin.Context) {
 	var data models.Meeting
 	if c.BindJSON(&data) != nil {
@@ -50,6 +76,15 @@ func (meeting *MeetingController) Create(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Meeting Created", "new_meeting": data})
 }
 
+// ListGroupMeetings godoc
+// @Summary List group upcoming meetings
+// @Description get group upcoming meetings
+// @Tags groups
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Group ID"
+// @Success 200 {array} models.Meeting
+// @Router /group/{id}/meetings [get]
 func(meeting *MeetingController) GetMeetings(c *gin.Context){
 		groupID := c.Param("id")
 		var list []models.Meeting

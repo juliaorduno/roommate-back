@@ -2,6 +2,7 @@ package routers
 
 import (
 	"../controllers"
+
 	"github.com/gin-gonic/gin"
 	"github.com/appleboy/gin-jwt"
 	"log"
@@ -32,8 +33,8 @@ func SetupRouter() *gin.Engine {
 
 		api.GET("/groups", rGroup.Find)
 		api.GET("/groups/:id", rGroup.Get)
-		api.POST("/groups", rGroup.Create)
-		api.POST("/groups/createGroup", rGroup.CreateGroup)
+		api.POST("/groups", rGroup.CreateGroup)
+		//api.POST("/groups/createGroup", rGroup.CreateGroup)
 		api.GET("/groups/:id/tasks", task.GetToDos)
 		api.GET("/groups/:id/meetings", meeting.GetMeetings)
 		api.GET("/groups/:id/shoppingItems", shoppingItem.GetShoppingItems)

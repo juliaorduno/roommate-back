@@ -9,6 +9,14 @@ var memberModel = new(models.MemberModel)
 
 type MemberController struct{}
 
+// ListMembers godoc
+// @Summary List members
+// @Description get members
+// @Tags members
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.Member
+// @Router /members [get]
 func (member *MemberController) Find(c *gin.Context) {
 	var list []models.Member
 	err := memberModel.Find(&list)
@@ -20,6 +28,15 @@ func (member *MemberController) Find(c *gin.Context) {
 	}
 }
 
+// GetMember godoc
+// @Summary Get a member
+// @Description get member by ID
+// @Tags members
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Member ID"
+// @Success 200 {object} models.Member
+// @Router /members/{id} [get]
 func (member *MemberController) Get(c *gin.Context) {
 	id := c.Param("id")
 	var data models.Member
@@ -32,6 +49,15 @@ func (member *MemberController) Get(c *gin.Context) {
 	}
 }
 
+// CreateMember godoc
+// @Summary Create a member
+// @Description create by json member
+// @Tags members
+// @Accept  json
+// @Produce  json
+// @Param member body models.Member true "Add member"
+// @Success 200 {object} models.Member
+// @Router /members [post]
 func (member *MemberController) Create(c *gin.Context) {
 	var data models.Member
 	if c.BindJSON(&data) != nil {
@@ -50,6 +76,14 @@ func (member *MemberController) Create(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Member Created", "new_member": data})
 }
 
+// JoinGroup godoc
+// @Summary Join a group
+// @Description join group by groupcode and memberID
+// @Tags members
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Member
+// @Router /members [post]
 func (member *MemberController) JoinGroup(c *gin.Context) {
 	var data struct {
 		GroupCode string `json:"group_code"`

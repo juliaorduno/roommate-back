@@ -8,7 +8,7 @@ import (
 
 type Announcement struct {
 	ID     			uint			`json:"id"`
-	GroupID			uint			`sql: json:"group_id"`
+	GroupID			uint			`json:"group_id"`
 	Content			string			`sql:"type:varchar(255);not null" json:"content"`
 	CreatedBy		uint			`sql:"not null" json:"created_by"`
 	CreatedAt		time.Time		`json:"created_at"`

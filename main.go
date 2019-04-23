@@ -4,8 +4,25 @@ import (
 	"./db"
 	"./models"
 	"./routers"
+	_ "./docs"
+
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles" // swagger embed files
 )
 
+// @title Roommate API
+// @version 1.0
+// @description This is the API corresponding to a Roommate server.
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:3030
+// @BasePath /api
 func main() {
 	db.DB = db.DbConn()
 	defer db.DB.Close()
@@ -21,6 +38,12 @@ func main() {
 	)
 
 	router := routers.SetupRouter()
+
+	config := &ginSwagger.Config{
+		URL: "http://localhost:3030/swagger/doc.json", //The url pointing to API definition
+	}
+	// use ginSwagger middleware to 
+	router.GET("/swagger/*any", ginSwagger.CustomWrapHandler(config, swaggerFiles.Handler))
 
 	router.Run(":3030")
 }

@@ -9,6 +9,14 @@ var announcementModel = new(models.AnnouncementModel)
 
 type AnnouncementController struct{}
 
+// ListAnnouncements godoc
+// @Summary List announcements
+// @Description get announcements
+// @Tags announcements
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.Announcement
+// @Router /announcements [get]
 func (announcement *AnnouncementController) Find(c *gin.Context) {
 	var list []models.Announcement
 	err := announcementModel.Find(&list)
@@ -20,6 +28,15 @@ func (announcement *AnnouncementController) Find(c *gin.Context) {
 	}
 }
 
+// GetAnnouncement godoc
+// @Summary Get an announcement
+// @Description get announcement by ID
+// @Tags announcements
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Announcement ID"
+// @Success 200 {object} models.Announcement
+// @Router /announcements/{id} [get]
 func (announcement *AnnouncementController) Get(c *gin.Context) {
 	id := c.Param("id")
 	var data models.Announcement
@@ -32,6 +49,15 @@ func (announcement *AnnouncementController) Get(c *gin.Context) {
 	}
 }
 
+// CreateAnnouncement godoc
+// @Summary Create an announcement
+// @Description create by json announcement
+// @Tags announcements
+// @Accept  json
+// @Produce  json
+// @Param announcement body models.Announcement true "Add announcement"
+// @Success 200 {object} models.Announcement
+// @Router /announcements [post]
 func (announcement *AnnouncementController) Create(c *gin.Context) {
 	var data models.Announcement
 	if c.BindJSON(&data) != nil {
@@ -51,6 +77,15 @@ func (announcement *AnnouncementController) Create(c *gin.Context) {
 
 }
 
+// ListGroupAnnouncements godoc
+// @Summary List group announcements
+// @Description get group announcements
+// @Tags groups
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Group ID"
+// @Success 200 {array} models.Announcement
+// @Router /group/{id}/announcements [get]
 func(announcement *AnnouncementController) GetAnnouncements(c *gin.Context) {
 	groupID := c.Param("id")
 	var list []models.Announcement

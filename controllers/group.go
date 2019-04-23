@@ -9,6 +9,14 @@ var groupModel = new(models.GroupModel)
 
 type GroupController struct{}
 
+// ListGroups godoc
+// @Summary List groups
+// @Description get groups
+// @Tags groups
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.RGroup
+// @Router /groups [get]
 func (RGroup *GroupController) Find(c *gin.Context) {
 	var list []models.RGroup
 	err := groupModel.Find(&list)
@@ -20,6 +28,15 @@ func (RGroup *GroupController) Find(c *gin.Context) {
 	}
 }
 
+// GetGroup godoc
+// @Summary Get a group
+// @Description get group by ID
+// @Tags groups
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Group ID"
+// @Success 200 {object} models.RGroup
+// @Router /groups/{id} [get]
 func (RGroup *GroupController) Get(c *gin.Context) {
 	id := c.Param("id")
 	var data models.RGroup
@@ -50,6 +67,15 @@ func (RGroup *GroupController) Create(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Group Created", "new_rgroup": data})
 }
 
+// CreateGroup godoc
+// @Summary Create a group
+// @Description create by json group
+// @Tags groups
+// @Accept  json
+// @Produce  json
+// @Param group body models.RGroup true "Add group"
+// @Success 200 {object} models.RGroup
+// @Router /groups [post]
 func (RGroup *GroupController) CreateGroup(c *gin.Context) {
 	var data models.RGroup
 	if c.BindJSON(&data) != nil {

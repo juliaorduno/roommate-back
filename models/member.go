@@ -24,12 +24,21 @@ func (m *MemberModel) Find(list *[]Member) (err error) {
 	if err := db.DB.Find(list).Error; err != nil {
 		return err
 	}
+
 	return nil
 }
 
 func (m *MemberModel) Get(id string, member *Member) (err error) {
 	if err := db.DB.First(member, id).Error; err != nil {
 		return err
+	}
+
+	if member.GroupID > 0 {
+		var rGroup RGroup
+		if err := db.DB.First(&rGroup, member.GroupID).Error; err != nil {
+			return err
+		}
+		member.Group = rGroup
 	}
 	return nil
 }
@@ -80,7 +89,7 @@ func (m *MemberModel) JoinGroup(id int, groupCode string, member *Member) (err e
 		return err
 	}
 
-	//member.Group = rGroup
+	member.Group = rGroup
 
 	return nil
 }

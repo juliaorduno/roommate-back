@@ -12,7 +12,7 @@ type Task struct {
 	Asignee			uint		`json:"asignee"`
 	DueDate			time.Time	`sql:"not null" json:"due_date"`
 	Finished		int			`json:"finished"`
-	FinishedBy		uint		`json:"finished_by"`
+	FinishedBy		uint		`sql:"default:null" json:"finished_by"`
 	FinishedAt		time.Time	`json:"finished_at"`
 	CreatedBy		uint 		`sql:"not null" json:"created_by"`
 	CreatedAt 		time.Time 	`json:"created_at"`

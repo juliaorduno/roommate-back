@@ -1,0 +1,633 @@
+basePath: /api
+definitions:
+  models.Announcement:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      group_id:
+        type: integer
+      id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.Meeting:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      end_date:
+        type: string
+      event:
+        type: string
+      group_id:
+        type: integer
+      id:
+        type: integer
+      start_date:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Member:
+    properties:
+      deleted_at:
+        type: string
+      email:
+        type: string
+      full_name:
+        type: string
+      group:
+        $ref: '#/definitions/models.RGroup'
+        type: object
+      group_id:
+        type: integer
+      id:
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+      username:
+        type: string
+    type: object
+  models.RGroup:
+    properties:
+      admin:
+        type: integer
+      code:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      size:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.ShoppingItem:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      description:
+        type: string
+      finished:
+        type: integer
+      finished_at:
+        type: string
+      finished_by:
+        type: integer
+      group_id:
+        type: integer
+      id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.Task:
+    properties:
+      asignee:
+        type: integer
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      deleted_at:
+        type: string
+      description:
+        type: string
+      due_date:
+        type: string
+      finished:
+        type: integer
+      finished_at:
+        type: string
+      finished_by:
+        type: integer
+      group_id:
+        type: integer
+      id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+host: localhost:3030
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is the API corresponding to a Roommate server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Roommate API
+  version: "1.0"
+paths:
+  /announcements:
+    get:
+      consumes:
+      - application/json
+      description: get announcements
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Announcement'
+            type: array
+      summary: List announcements
+      tags:
+      - announcements
+    post:
+      consumes:
+      - application/json
+      description: create by json announcement
+      parameters:
+      - description: Add announcement
+        in: body
+        name: announcement
+        required: true
+        schema:
+          $ref: '#/definitions/models.Announcement'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Announcement'
+            type: object
+      summary: Create an announcement
+      tags:
+      - announcements
+  /announcements/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get announcement by ID
+      parameters:
+      - description: Announcement ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Announcement'
+            type: object
+      summary: Get an announcement
+      tags:
+      - announcements
+  /group/{id}/announcements:
+    get:
+      consumes:
+      - application/json
+      description: get group announcements
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Announcement'
+            type: array
+      summary: List group announcements
+      tags:
+      - groups
+  /group/{id}/meetings:
+    get:
+      consumes:
+      - application/json
+      description: get group upcoming meetings
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Meeting'
+            type: array
+      summary: List group upcoming meetings
+      tags:
+      - groups
+  /group/{id}/shoppingItems:
+    get:
+      consumes:
+      - application/json
+      description: get group pending shopping items
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ShoppingItem'
+            type: array
+      summary: List group pending shopping items
+      tags:
+      - groups
+  /group/{id}/tasks:
+    get:
+      consumes:
+      - application/json
+      description: get group pending tasks
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+      summary: List group pending tasks
+      tags:
+      - groups
+  /groups:
+    get:
+      consumes:
+      - application/json
+      description: get groups
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.RGroup'
+            type: array
+      summary: List groups
+      tags:
+      - groups
+    post:
+      consumes:
+      - application/json
+      description: create by json group
+      parameters:
+      - description: Add group
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/models.RGroup'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RGroup'
+            type: object
+      summary: Create a group
+      tags:
+      - groups
+  /groups/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get group by ID
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RGroup'
+            type: object
+      summary: Get a group
+      tags:
+      - groups
+  /meetings:
+    get:
+      consumes:
+      - application/json
+      description: get meetings
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Meeting'
+            type: array
+      summary: List meetings
+      tags:
+      - meetings
+    post:
+      consumes:
+      - application/json
+      description: create by json meeting
+      parameters:
+      - description: Add Meeting
+        in: body
+        name: meeting
+        required: true
+        schema:
+          $ref: '#/definitions/models.Meeting'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+            type: object
+      summary: Create a meeting
+      tags:
+      - meetings
+  /meetings/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get meeting by ID
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+            type: object
+      summary: Get a meeting
+      tags:
+      - meetings
+  /members:
+    get:
+      consumes:
+      - application/json
+      description: get members
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Member'
+            type: array
+      summary: List members
+      tags:
+      - members
+    post:
+      consumes:
+      - application/json
+      description: join group by groupcode and memberID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Member'
+            type: object
+      summary: Join a group
+      tags:
+      - members
+  /members/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get member by ID
+      parameters:
+      - description: Member ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Member'
+            type: object
+      summary: Get a member
+      tags:
+      - members
+  /shoppingItems:
+    get:
+      consumes:
+      - application/json
+      description: get shopping items
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ShoppingItem'
+            type: array
+      summary: List shopping items
+      tags:
+      - shoppingItems
+    post:
+      consumes:
+      - application/json
+      description: create by json shopping item
+      parameters:
+      - description: Add ShoppingItem
+        in: body
+        name: shoppingItem
+        required: true
+        schema:
+          $ref: '#/definitions/models.ShoppingItem'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ShoppingItem'
+            type: object
+      summary: Create a shopping item
+      tags:
+      - shoppingItems
+  /shoppingItems/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get shopping item by ID
+      parameters:
+      - description: ShoppingItem ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ShoppingItem'
+            type: object
+      summary: Get a shopping item
+      tags:
+      - shoppingItems
+  /shoppingItems/finish:
+    post:
+      consumes:
+      - application/json
+      description: finish a pending shopping item
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ShoppingItem'
+            type: object
+      summary: Finish pending shopping item
+      tags:
+      - shoppingItems
+  /tasks:
+    get:
+      consumes:
+      - application/json
+      description: get tasks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+      summary: List tasks
+      tags:
+      - tasks
+    post:
+      consumes:
+      - application/json
+      description: create by json task
+      parameters:
+      - description: Add Task
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+            type: object
+      summary: Create a task
+      tags:
+      - tasks
+  /tasks/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get task by ID
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+            type: object
+      summary: Get a task
+      tags:
+      - tasks
+  /tasks/finish:
+    post:
+      consumes:
+      - application/json
+      description: finish a pending task
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+            type: object
+      summary: Finish pending task
+      tags:
+      - tasks
+swagger: "2.0"

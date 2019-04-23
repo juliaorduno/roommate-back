@@ -9,7 +9,7 @@ import (
 type Meeting struct {
 	ID        uint       `json:"id"`
 	Event     string     `sql:"type:varchar(255);not null" json:"event"`
-	GroupID   uint        ` json:"group_id"`
+	GroupID   uint        `json:"group_id"`
 	StartDate time.Time  `sql:"not null" json:"start_date"`
 	EndDate   time.Time  `json:"end_date"`
 	CreatedBy uint        `sql:"not null" json:"created_by"`

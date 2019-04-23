@@ -9,6 +9,14 @@ var taskModel = new(models.TaskModel)
 
 type TaskController struct{}
 
+// ListTasks godoc
+// @Summary List tasks
+// @Description get tasks
+// @Tags tasks
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.Task
+// @Router /tasks [get]
 func (task *TaskController) Find(c *gin.Context) {
 	var list []models.Task
 	err := taskModel.Find(&list)
@@ -20,6 +28,15 @@ func (task *TaskController) Find(c *gin.Context) {
 	}
 }
 
+// GetTask godoc
+// @Summary Get a task
+// @Description get task by ID
+// @Tags tasks
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Task ID"
+// @Success 200 {object} models.Task
+// @Router /tasks/{id} [get]
 func (task *TaskController) Get(c *gin.Context) {
 	id := c.Param("id")
 	var data models.Task
@@ -32,6 +49,15 @@ func (task *TaskController) Get(c *gin.Context) {
 	}
 }
 
+// CreateTask godoc
+// @Summary Create a task
+// @Description create by json task
+// @Tags tasks
+// @Accept  json
+// @Produce  json
+// @Param task body models.Task true "Add Task"
+// @Success 200 {object} models.Task
+// @Router /tasks [post]
 func (task *TaskController) Create(c *gin.Context) {
 	var data models.Task
 	if c.BindJSON(&data) != nil {
@@ -50,6 +76,15 @@ func (task *TaskController) Create(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Task Created", "new_task": data})
 }
 
+// ListGroupTasks godoc
+// @Summary List group pending tasks
+// @Description get group pending tasks
+// @Tags groups
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Group ID"
+// @Success 200 {array} models.Task
+// @Router /group/{id}/tasks [get]
 func (task *TaskController) GetToDos(c *gin.Context) {
 	groupID := c.Param("id")
 	var list []models.Task
@@ -64,6 +99,14 @@ func (task *TaskController) GetToDos(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "To dos retrieved", "todos": list})
 }
 
+// FinishTask godoc
+// @Summary Finish pending task
+// @Description finish a pending task
+// @Tags tasks
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Task
+// @Router /tasks/finish [post]
 func (task *TaskController) FinishTask(c *gin.Context) {
 	var data struct {
 		ID int `json:"id"`

@@ -13,7 +13,7 @@ type ShoppingItem struct {
 	GroupID     uint        `json:"group_id"`
 	Finished    int        `json:"finished"`
 	FinishedAt  time.Time  `json:"finished_at"`
-	FinishedBy  uint        `json:"finished_by"`
+	FinishedBy  uint        `sql:"default:null" json:"finished_by"`
 	CreatedAt   time.Time  `json:"created_at"`
 	UpdatedAt   time.Time  `json:"updated_at"`
 	DeletedAt   *time.Time `json:"deleted_at"`

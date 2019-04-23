@@ -9,6 +9,14 @@ var shoppingItemModel = new(models.ShoppingItemModel)
 
 type ShoppingItemController struct{}
 
+// ListShoppingItems godoc
+// @Summary List shopping items
+// @Description get shopping items
+// @Tags shoppingItems
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.ShoppingItem
+// @Router /shoppingItems [get]
 func (shoppingItem *ShoppingItemController) Find(c *gin.Context) {
 	var list []models.ShoppingItem
 	err := shoppingItemModel.Find(&list)
@@ -20,6 +28,15 @@ func (shoppingItem *ShoppingItemController) Find(c *gin.Context) {
 	}
 }
 
+// GetShoppingItem godoc
+// @Summary Get a shopping item
+// @Description get shopping item by ID
+// @Tags shoppingItems
+// @Accept  json
+// @Produce  json
+// @Param id path int true "ShoppingItem ID"
+// @Success 200 {object} models.ShoppingItem
+// @Router /shoppingItems/{id} [get]
 func (shoppingItem *ShoppingItemController) Get(c *gin.Context) {
 	id := c.Param("id")
 	var data models.ShoppingItem
@@ -32,6 +49,15 @@ func (shoppingItem *ShoppingItemController) Get(c *gin.Context) {
 	}
 }
 
+// CreateShoppingItem godoc
+// @Summary Create a shopping item
+// @Description create by json shopping item
+// @Tags shoppingItems
+// @Accept  json
+// @Produce  json
+// @Param shoppingItem body models.ShoppingItem true "Add ShoppingItem"
+// @Success 200 {object} models.ShoppingItem
+// @Router /shoppingItems [post]
 func (shoppingItem *ShoppingItemController) Create(c *gin.Context) {
 	var data models.ShoppingItem
 	if c.BindJSON(&data) != nil {
@@ -50,6 +76,15 @@ func (shoppingItem *ShoppingItemController) Create(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "ShoppingItem Created", "new_shopping_item": data})
 }
 
+// ListGroupShoppingItems godoc
+// @Summary List group pending shopping items
+// @Description get group pending shopping items
+// @Tags groups
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Group ID"
+// @Success 200 {array} models.ShoppingItem
+// @Router /group/{id}/shoppingItems [get]
 func (shoppingItem *ShoppingItemController) GetShoppingItems(c *gin.Context) {
 	groupID := c.Param("id")
 	var list []models.ShoppingItem
@@ -64,6 +99,14 @@ func (shoppingItem *ShoppingItemController) GetShoppingItems(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Shopping items retrieved", "shopping items": list})
 }
 
+// FinishShoppingItem godoc
+// @Summary Finish pending shopping item
+// @Description finish a pending shopping item
+// @Tags shoppingItems
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.ShoppingItem
+// @Router /shoppingItems/finish [post]
 func (shoppingItem *ShoppingItemController) FinishItem(c *gin.Context) {
 	var data struct {
 		ID int `json:"id"`
