@@ -55,7 +55,7 @@ func (m *AnnouncementModel) Create(announcement *Announcement) (err error) {
 }
 
 func (m *AnnouncementModel) GetAnnouncements (groupID string)(err error, list []Announcement){
-	if err := db.DB.Where("group_id = ?", groupID).Find(&list).Error; err != nil {
+	if err := db.DB.Where("group_id = ?", groupID).Order("created_at desc").Find(&list).Error; err != nil {
 		return err, nil
 	}
 

@@ -15,6 +15,7 @@ type RGroup struct {
 	Size      int        `json:"size"`
 	CreatedBy uint       `sql:"not null" json:"created_by"`
 	Admin     uint       `sql:"not null" json:"admin"`
+	Members	  []Member	 `gorm:"foreignkey:GroupID;association_foreignkey:ID" json:"members"`
 	UpdatedAt time.Time  `json:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at"`
 }
@@ -58,6 +59,15 @@ func (m *GroupModel) Get(id string, rGroup *RGroup) (err error) {
 	if err := db.DB.First(rGroup, id).Error; err != nil {
 		return err
 	}
+
+	var members []Member
+	
+	if err := db.DB.Where("group_id = ?", id).Find(&members).Error; err != nil {
+		return err
+	}
+
+	rGroup.Members = members
+
 	return nil
 }
 
