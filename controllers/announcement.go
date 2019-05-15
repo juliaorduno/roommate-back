@@ -88,8 +88,8 @@ func (announcement *AnnouncementController) Create(c *gin.Context) {
 // @Router /group/{id}/announcements [get]
 func(announcement *AnnouncementController) GetAnnouncements(c *gin.Context) {
 	groupID := c.Param("id")
-	var list []models.Announcement
-	err := announcementModel.GetAnnouncements(groupID, &list)
+
+	err, list := announcementModel.GetAnnouncements(groupID)
 
 	if err != nil{
 		c.JSON(500, gin.H{"message": "Announcements could not be retrieved", "error": err.Error()})

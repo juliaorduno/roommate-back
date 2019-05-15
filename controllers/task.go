@@ -87,8 +87,7 @@ func (task *TaskController) Create(c *gin.Context) {
 // @Router /group/{id}/tasks [get]
 func (task *TaskController) GetToDos(c *gin.Context) {
 	groupID := c.Param("id")
-	var list []models.Task
-	err := taskModel.GetToDos(groupID, &list)
+	err, list := taskModel.GetToDos(groupID)
 	
 	if err != nil {
 		c.JSON(500, gin.H{"message": "To Dos could not be retrieved", "error": err.Error()})

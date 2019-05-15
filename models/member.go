@@ -43,6 +43,13 @@ func (m *MemberModel) Get(id string, member *Member) (err error) {
 	return nil
 }
 
+func (m *MemberModel) GetCurrentUser(email string, member *Member) (err error) {
+	if err := db.DB.Where("email = ?", email).First(member).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *MemberModel) Create(member *Member) (err error) {
 	if err := db.DB.Create(member).Error; err != nil {
 		return err

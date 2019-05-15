@@ -87,8 +87,8 @@ func (meeting *MeetingController) Create(c *gin.Context) {
 // @Router /group/{id}/meetings [get]
 func(meeting *MeetingController) GetMeetings(c *gin.Context){
 		groupID := c.Param("id")
-		var list []models.Meeting
-		err := meetingModel.GetMeetings(groupID, &list)
+	
+		err, list := meetingModel.GetMeetings(groupID)
 
 		if err != nil {
 			c.JSON(400, gin.H{"message": "Meetings could not be retrieved", "error": err.Error()})

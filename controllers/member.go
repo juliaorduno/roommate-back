@@ -49,6 +49,18 @@ func (member *MemberController) Get(c *gin.Context) {
 	}
 }
 
+func (member *MemberController) GetByEmail(c *gin.Context) {
+	email := c.Param("email")
+	var data models.Member
+	err := memberModel.GetCurrentUser(email, &data)
+	if err != nil {
+		c.JSON(404, gin.H{"message": "Member not found", "error": err.Error()})
+		c.Abort()
+	} else {
+		c.JSON(200, gin.H{"data": data})
+	}
+}
+
 // CreateMember godoc
 // @Summary Create a member
 // @Description create by json member

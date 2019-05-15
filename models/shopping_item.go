@@ -10,6 +10,7 @@ type ShoppingItem struct {
 	ID          uint       `json:"id"`
 	Description string     `sql:"type:varchar(255);not null" json:"description"`
 	CreatedBy   uint        `json:"created_by"`
+	Member			Member			`gorm:"foreignkey:CreatedBy;association_foreignkey:ID" json:"added_by"`
 	GroupID     uint        `json:"group_id"`
 	Finished    int        `json:"finished"`
 	FinishedAt  time.Time  `json:"finished_at"`
@@ -39,14 +40,38 @@ func (m *ShoppingItemModel) Create(shoppingItem *ShoppingItem) (err error) {
 	if err := db.DB.Create(shoppingItem).Error; err != nil {
 		return err
 	}
+
+	log := Log{
+		GroupID: 	 shoppingItem.GroupID,
+		CreatedBy: shoppingItem.CreatedBy,
+		ItemType:  3,
+		Item:			 shoppingItem.Description,
+	}
+
+	err = logModel.Create(&log)
+
+	if err != nil{
+		return err
+	}
+
 	return nil
 }
 
-func (m *ShoppingItemModel) GetShoppingItems(groupID string, list *[]ShoppingItem) (err error) {
-	if err := db.DB.Where("group_id = ? AND finished = ?", groupID, 0).Find(list).Error; err != nil {
-		return err
+func (m *ShoppingItemModel) GetShoppingItems(groupID string,) (err error, list []ShoppingItem) {
+	if err := db.DB.Where("group_id = ? AND finished = ?", groupID, 0).Find(&list).Error; err != nil {
+		return err, nil
 	}
-	return nil
+
+	var member Member
+
+	for i := 0; i < len(list); i++ {
+		if err = db.DB.First(&member, list[i].CreatedBy).Error; err !=  nil {
+			return err, nil
+		}
+
+		list[i].Member = member
+	}
+	return nil, list
 }
 
 func (m *ShoppingItemModel) FinishItem(id int, finished_by uint, shoppingItem *ShoppingItem) (err error) {

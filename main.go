@@ -1,6 +1,8 @@
 package main
 
 import (
+	//"net/http"
+
 	"./db"
 	"./models"
 	"./routers"
@@ -35,7 +37,11 @@ func main() {
 		&models.ShoppingItem{},
 		&models.Task{},
 		&models.User{},
+		&models.Log{},
 	)
+
+	db.DB.Model(&models.Log{}).AddForeignKey("group_id", "r_groups(id)","RESTRICT", "RESTRICT")
+	db.DB.Model(&models.Log{}).AddForeignKey("created_by", "members(id)","RESTRICT", "RESTRICT")
 
 	router := routers.SetupRouter()
 
@@ -44,6 +50,5 @@ func main() {
 	}
 	// use ginSwagger middleware to 
 	router.GET("/swagger/*any", ginSwagger.CustomWrapHandler(config, swaggerFiles.Handler))
-
 	router.Run(":3030")
 }

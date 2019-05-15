@@ -104,15 +104,3 @@ func Login(email, password string) bool {
 
 	return true
 }
-
-/*func GetUser(u uint) *Account {
-
-	acc := &Account{}
-	GetDB().Table("accounts").Where("id = ?", u).First(acc)
-	if acc.Email == "" { //User not found!
-		return nil
-	}
-
-	acc.Password = ""
-	return acc
-}*/

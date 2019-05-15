@@ -87,8 +87,7 @@ func (shoppingItem *ShoppingItemController) Create(c *gin.Context) {
 // @Router /group/{id}/shoppingItems [get]
 func (shoppingItem *ShoppingItemController) GetShoppingItems(c *gin.Context) {
 	groupID := c.Param("id")
-	var list []models.ShoppingItem
-	err := shoppingItemModel.GetShoppingItems(groupID, &list)
+	err, list := shoppingItemModel.GetShoppingItems(groupID)
 
 	if err != nil {
 		c.JSON(500, gin.H{"message": "Shopping items could not be retrieved", "error": err.Error()})
@@ -96,7 +95,7 @@ func (shoppingItem *ShoppingItemController) GetShoppingItems(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Shopping items retrieved", "shopping items": list})
+	c.JSON(200, gin.H{"message": "Shopping items retrieved", "shopping_items": list})
 }
 
 // FinishShoppingItem godoc

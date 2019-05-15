@@ -1,0 +1,8 @@
+join group params
+finish item params
+
+create models for post
+
+reconsider posts body params
+
+check empty group field on members
