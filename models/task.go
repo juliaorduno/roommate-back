@@ -63,9 +63,9 @@ func (m *TaskModel) GetToDos(groupID string) ( err error, list []Task) {
 		return err, nil
 	}
 
-	var member Member
-
 	for i := 0; i < len(list); i++ {
+		var member Member
+
 		if err = db.DB.First(&member, list[i].Asignee).Error; err !=  nil {
 			return err, nil
 		}

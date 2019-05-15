@@ -34,7 +34,6 @@ func (user *UserController) Create(c *gin.Context) {
 		return
 	}
 
-
 	memberData.UserID = userData.ID
 	err = memberModel.Create(&memberData)
 	if err != nil {
@@ -43,7 +42,7 @@ func (user *UserController) Create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "User Created", "user": userData, "member": memberData})
+	c.JSON(200, gin.H{"message": "User Created", "user": userData, "data": memberData})
 }
 
 func (user *UserController) GetCurrentUser(c *gin.Context) {

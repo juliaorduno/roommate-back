@@ -22,16 +22,15 @@ func SetupRouter() *gin.Engine {
 	shoppingItem := new(controllers.ShoppingItemController)
 	task := new(controllers.TaskController)
 	user := new(controllers.UserController)
+	logC := new(controllers.LogController)
 
 	api := router.Group("/api")
 	{
 		api.POST("/login", authMiddleware.LoginHandler)
 		api.POST("/users", user.Create)
 		api.GET("/members", member.Find)
-
 		api.GET("/members/:email", member.GetByEmail)
 		api.POST("/members", member.Create)
-		//api.GET("/current/:email", member.GetByEmail)
 		api.POST("/members/joinGroup", member.JoinGroup)
 
 		api.GET("/groups", rGroup.Find)
@@ -41,6 +40,7 @@ func SetupRouter() *gin.Engine {
 		api.GET("/groups/:id/meetings", meeting.GetMeetings)
 		api.GET("/groups/:id/shoppingItems", shoppingItem.GetShoppingItems)
 		api.GET("/groups/:id/announcements", announcement.GetAnnouncements)
+		api.GET("/groups/:id/logs", logC.GetLogs)
 
 		api.GET("/announcements", announcement.Find)
 		api.GET("/announcements/:id", announcement.Get)

@@ -25,7 +25,7 @@ type User struct {
 }
 
 type UserForm struct {
-	Email string `json:"email"`
+	Email string `sql:"unique" json:"email"`
 	Password string `json:"password"`
 	Token string `json:"token"`
 	FullName  string     `json:"full_name"`

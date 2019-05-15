@@ -128,5 +128,5 @@ func (member *MemberController) JoinGroup(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Group Joined", "updated_member": updatedMember})
+	c.JSON(200, gin.H{"message": "Group Joined", "data": updatedMember})
 }

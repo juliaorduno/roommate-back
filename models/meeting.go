@@ -61,9 +61,9 @@ func (m *MeetingModel) GetMeetings(groupID string) (err error, list []Meeting) {
 		return err, nil
 	}
 
-	var member Member
-
 	for i := 0; i < len(list); i++ {
+		var member Member
+		
 		if err = db.DB.First(&member, list[i].CreatedBy).Error; err !=  nil {
 			return err, nil
 		}
